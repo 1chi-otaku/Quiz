@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 
 namespace QuestionUtiliyManager
 {
-    static class Utility
+    public static class Utility
     {
         public static void ShowQuizzes()
         {
@@ -29,6 +29,7 @@ namespace QuestionUtiliyManager
         }
         public static void ShowQuestions(string quiz_name)
         {
+            if (!Exists(quiz_name)) throw new Exception("Quiz with this name doesn't exist");
             FileStream stream = new FileStream("QuizType_" + quiz_name + ".xml", FileMode.Open);
             XmlSerializer serializer = new XmlSerializer(typeof(List<Question>));
             List<Question> l = (List<Question>)serializer.Deserialize(stream);
@@ -41,6 +42,7 @@ namespace QuestionUtiliyManager
         }
         public static void Create(string name)
         {
+            if (Exists(name)) throw new Exception("Quiz with this name already exists");
             List<Question> list = new List<Question>();
             uint i = 1;
             string question,answer_a,answer_b,answer_c,answer_d;
@@ -74,6 +76,7 @@ namespace QuestionUtiliyManager
         }
         public static void DeleteQuestion(string quiz_name, int position)
         {
+            if (!Exists(quiz_name)) throw new Exception("Quiz with this name doesn't exist");
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load("QuizType_" + quiz_name + ".xml");
             XmlElement xRoot = xDoc.DocumentElement;
@@ -83,6 +86,7 @@ namespace QuestionUtiliyManager
         }
         public static void AddQuestion(string quiz_name, string question, string answer_a, string answer_b, string answer_c, string answer_d, AnswerOption answerOption)
         {
+            if (!Exists(quiz_name)) throw new Exception("Quiz with this name doesn't exist");
             XmlDocument doc = new XmlDocument();
             doc.Load("QuizType_" + quiz_name + ".xml");
 
@@ -109,6 +113,12 @@ namespace QuestionUtiliyManager
             child.AppendChild(Answer_d);
             child.AppendChild(Answer);
             doc.Save("QuizType_" + quiz_name + ".xml");
+        }
+        public static bool Exists(string quiz_name)
+        {
+            if (File.Exists("QuizType_" + quiz_name + ".xml"))
+                return true;
+            return false;
         }
     }
 }

@@ -31,6 +31,7 @@ namespace Quiz
             Console.WriteLine("2 - Add a question");
             Console.WriteLine("3 - Delete a question");
             Console.WriteLine("0 - Exit");
+            Console.Write(":-");
         }
         static void Main(string[] args)
         {
@@ -100,12 +101,6 @@ namespace Quiz
                                     break;
                             }
                         }
-                        
-
-
-
-
-
                         break;
 
                 }
