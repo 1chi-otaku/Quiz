@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<Question xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <question>What year Soviet union was collapsed?</question>
+  <answer_a>1992</answer_a>
+  <answer_b>1990</answer_b>
+  <answer_c>1980</answer_c>
+  <answer_d>1991</answer_d>
+  <answer>D</answer>
+</Question>

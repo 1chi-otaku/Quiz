@@ -11,8 +11,9 @@ namespace Quiz
         static void Main(string[] args)
         {
 
-            //Question question = new Question("What year Soviet union was collapsed?","1992","1990","1980","1991",AnswerOption.D);
-            //question.PrintQuestion();
+            Question question = new Question("What year Soviet union was collapsed?", "1992", "1990", "1980", "1991", AnswerOption.D);
+            Question question2 = new Question("Do you like blueberries?", "YES", "NO", "NO", "NO", AnswerOption.A);
+            question.PrintQuestion();
             //string str = Console.ReadLine();
             //AnswerOption week1;
             //Enum.TryParse<AnswerOption>(str, out week1);
@@ -21,12 +22,12 @@ namespace Quiz
             //{
             //    Console.WriteLine("Hola!!! -1 chas rabotbl");
             //}
-            
-            LoginHandler handler = new LoginHandler("1chi","123");
-            if (handler.Exists("otaku"))
-            {
-                Console.WriteLine("yeah");
-            }
+
+            //LoginHandler handler = new LoginHandler("1chi","123");
+            //if (handler.Exists("otaku"))
+            //{
+            //    Console.WriteLine("yeah");
+            //}
 
         }
     }

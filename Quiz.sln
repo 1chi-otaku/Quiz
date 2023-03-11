@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Quiz", "Quiz\Quiz.csproj", "{A277C699-1A5E-43DC-8E38-81AA325F8ADA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuestionUtiliyManager", "QuestionUtiliyManager\QuestionUtiliyManager.csproj", "{52646EA5-204D-43AA-8A0A-4F529ED00804}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{A277C699-1A5E-43DC-8E38-81AA325F8ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A277C699-1A5E-43DC-8E38-81AA325F8ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A277C699-1A5E-43DC-8E38-81AA325F8ADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52646EA5-204D-43AA-8A0A-4F529ED00804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52646EA5-204D-43AA-8A0A-4F529ED00804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52646EA5-204D-43AA-8A0A-4F529ED00804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52646EA5-204D-43AA-8A0A-4F529ED00804}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
