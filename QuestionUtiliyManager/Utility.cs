@@ -12,10 +12,9 @@ using System.Xml.Serialization;
 
 namespace QuestionUtiliyManager
 {
-    [Serializable]
-    class Utility
+    static class Utility
     {
-        public void ShowQuizzes()
+        public static void ShowQuizzes()
         {
             Console.WriteLine("Available quizzes:");
             DirectoryInfo dir = new DirectoryInfo(".");
@@ -28,24 +27,22 @@ namespace QuestionUtiliyManager
                 Console.WriteLine(s);
             }
         }
-        public void ShowQuestions(string quiz_name)
+        public static void ShowQuestions(string quiz_name)
         {
             FileStream stream = new FileStream("QuizType_" + quiz_name + ".xml", FileMode.Open);
             XmlSerializer serializer = new XmlSerializer(typeof(List<Question>));
             List<Question> l = (List<Question>)serializer.Deserialize(stream);
-            foreach (Question j in l)
+            for (int i = 0; i < l.Count; i++)
             {
-                j.PrintQuestion();
+                Console.Write((i+1) + ": ");
+                l[i].PrintQuestion();
             }
             stream.Close();
         }
-        public void Create()
+        public static void Create(string name)
         {
             List<Question> list = new List<Question>();
-            Console.WriteLine("Enter name of quiz:");
-            string name = Console.ReadLine();
             uint i = 1;
-
             string question,answer_a,answer_b,answer_c,answer_d;
             AnswerOption option = AnswerOption.A;
             while(Console.ReadLine() != "exit")
@@ -75,15 +72,7 @@ namespace QuestionUtiliyManager
             serializer.Serialize(stream, list);
             stream.Close();
         }
-        public void Edit()
-        {
-            ShowQuizzes();
-            Console.WriteLine("Enter a name of a quiz:");
-            string quiz = Console.ReadLine();
-            Console.WriteLine();
-            ShowQuestions(quiz);
-        }
-        public void DeleteQuestion(string quiz_name, int position)
+        public static void DeleteQuestion(string quiz_name, int position)
         {
             XmlDocument xDoc = new XmlDocument();
             xDoc.Load("QuizType_" + quiz_name + ".xml");
@@ -92,12 +81,12 @@ namespace QuestionUtiliyManager
             xRoot.RemoveChild(firstNode);
             xDoc.Save("QuizType_" + quiz_name + ".xml");
         }
-        public void AddQuestion(string quiz_name, string question, string answer_a, string answer_b, string answer_c, string answer_d, AnswerOption answerOption)
+        public static void AddQuestion(string quiz_name, string question, string answer_a, string answer_b, string answer_c, string answer_d, AnswerOption answerOption)
         {
             XmlDocument doc = new XmlDocument();
             doc.Load("QuizType_" + quiz_name + ".xml");
-            XmlNode root = doc.SelectSingleNode("ArrayOfQuestion");
 
+            XmlNode root = doc.SelectSingleNode("ArrayOfQuestion");
             XmlElement child = doc.CreateElement("Question");
             root.AppendChild(child);
 
@@ -120,7 +109,6 @@ namespace QuestionUtiliyManager
             child.AppendChild(Answer_d);
             child.AppendChild(Answer);
             doc.Save("QuizType_" + quiz_name + ".xml");
-
         }
     }
 }
