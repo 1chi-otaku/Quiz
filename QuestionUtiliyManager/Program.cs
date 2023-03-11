@@ -1,6 +1,7 @@
 ﻿using QuestionUtiliyManager;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,10 @@ namespace Quiz
         static void Main(string[] args)
         {
             Utility utility = new Utility();
-            utility.Edit();
+            utility.ShowQuizzes();
+            utility.AddQuestion("Test", "How are you", "Good", "Great", "Awesome", "Outstanding", AnswerOption.A);
+            utility.ShowQuestions("Test");
+
         }
     }
 }

@@ -15,6 +15,30 @@ namespace QuestionUtiliyManager
     [Serializable]
     class Utility
     {
+        public void ShowQuizzes()
+        {
+            Console.WriteLine("Available quizzes:");
+            DirectoryInfo dir = new DirectoryInfo(".");
+            FileInfo[] files = dir.GetFiles(@"QuizType_*.xml");
+            foreach (FileInfo f in files)
+            {
+                string s = f.Name;
+                s = s.Replace("QuizType_", "");
+                s = s.Replace(".xml", "");
+                Console.WriteLine(s);
+            }
+        }
+        public void ShowQuestions(string quiz_name)
+        {
+            FileStream stream = new FileStream("QuizType_" + quiz_name + ".xml", FileMode.Open);
+            XmlSerializer serializer = new XmlSerializer(typeof(List<Question>));
+            List<Question> l = (List<Question>)serializer.Deserialize(stream);
+            foreach (Question j in l)
+            {
+                j.PrintQuestion();
+            }
+            stream.Close();
+        }
         public void Create()
         {
             List<Question> list = new List<Question>();
@@ -53,28 +77,50 @@ namespace QuestionUtiliyManager
         }
         public void Edit()
         {
-            Console.WriteLine("Available quizzes:");
-            DirectoryInfo dir = new DirectoryInfo(".");
-            FileInfo[] files = dir.GetFiles(@"QuizType_*.xml");    
-            foreach (FileInfo f in files)
-            {
-                string s = f.Name;
-                s = s.Replace("QuizType_", "");
-                s = s.Replace(".xml", "");
-                Console.WriteLine(s);
-            }
+            ShowQuizzes();
+            Console.WriteLine("Enter a name of a quiz:");
+            string quiz = Console.ReadLine();
             Console.WriteLine();
-            Console.Write("Enter name to edit: ");
-            string edit = Console.ReadLine();
-            FileStream stream = new FileStream("QuizType_" + edit + ".xml", FileMode.Open);
-            XmlSerializer serializer = new XmlSerializer(typeof(List<Question>));
-            List<Question> l = (List<Question>)serializer.Deserialize(stream);
-            foreach (Question j in l)
-            {
-                j.PrintQuestion();
-            }
-            stream.Close();
+            ShowQuestions(quiz);
         }
+        public void DeleteQuestion(string quiz_name, int position)
+        {
+            XmlDocument xDoc = new XmlDocument();
+            xDoc.Load("QuizType_" + quiz_name + ".xml");
+            XmlElement xRoot = xDoc.DocumentElement;
+            XmlNode firstNode = xRoot.ChildNodes[position-1];
+            xRoot.RemoveChild(firstNode);
+            xDoc.Save("QuizType_" + quiz_name + ".xml");
+        }
+        public void AddQuestion(string quiz_name, string question, string answer_a, string answer_b, string answer_c, string answer_d, AnswerOption answerOption)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load("QuizType_" + quiz_name + ".xml");
+            XmlNode root = doc.SelectSingleNode("ArrayOfQuestion");
 
+            XmlElement child = doc.CreateElement("Question");
+            root.AppendChild(child);
+
+            XmlElement Question = doc.CreateElement("question");
+            XmlElement Answer_a = doc.CreateElement("answer_a");
+            XmlElement Answer_b = doc.CreateElement("answer_b");
+            XmlElement Answer_c = doc.CreateElement("answer_c");
+            XmlElement Answer_d = doc.CreateElement("answer_d");
+            XmlElement Answer = doc.CreateElement("answer");
+            Question.InnerText = question;
+            Answer_a.InnerText = answer_a;
+            Answer_b.InnerText = answer_b;
+            Answer_c.InnerText = answer_c;
+            Answer_d.InnerText = answer_d;
+            Answer.InnerText = answerOption.ToString();
+            child.AppendChild(Question);
+            child.AppendChild(Answer_a);
+            child.AppendChild(Answer_b);
+            child.AppendChild(Answer_c);
+            child.AppendChild(Answer_d);
+            child.AppendChild(Answer);
+            doc.Save("QuizType_" + quiz_name + ".xml");
+
+        }
     }
 }
