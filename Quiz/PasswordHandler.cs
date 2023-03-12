@@ -9,7 +9,7 @@ namespace Quiz
 {
     class LoginHandler
     {
-        private string login;
+        public string login { get;}
         private string password;
         public LoginHandler() {
             Console.WriteLine("Enter new login:");
@@ -32,7 +32,10 @@ namespace Quiz
             string pass = sw.ReadToEnd();
             string trypass = login+ "|" + password +"\r\n";
             if(pass == trypass)
-                Console.WriteLine("Success!");
+            {
+                this.login = login;
+                this.password = password;
+            }
             else
                 Console.WriteLine("Bruh");
             sw.Close();

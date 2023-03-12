@@ -10,10 +10,13 @@ using System.Xml.Serialization;
 
 namespace Quiz
 {
+
     class Quiz
     {
         List<Question> questions= new List<Question>();
         LoginHandler loginHandler;
+        QuizResult result = new QuizResult();
+        StatisticsHandler statistics = new FileQuizStatistics();
 
         public Quiz() { 
             loginHandler = new LoginHandler();
@@ -22,14 +25,17 @@ namespace Quiz
         {
             loginHandler = new LoginHandler(login, password);
         }
-        public void QuizStart(string quiz)
+        public void SelectQuiz(string quiz_name)
         {
-            if (!Exists(quiz)) throw new Exception("Such quiz doesn't exist");
-            FileStream stream = new FileStream("QuizType_" + quiz + ".xml", FileMode.Open);
+            if (!Exists(quiz_name)) throw new Exception("Such quiz doesn't exist");
+            FileStream stream = new FileStream("QuizType_" + quiz_name + ".xml", FileMode.Open);
             XmlSerializer serializer = new XmlSerializer(typeof(List<Question>));
             questions = (List<Question>)serializer.Deserialize(stream);
             stream.Close();
-
+        }
+        public void QuizStart()
+        {
+            if (questions.Count == 0) throw new Exception("You have to select a quiz you like first.");
             int points = 0;
             for(int i = 0; i < questions.Count; i++)
             {
@@ -41,9 +47,20 @@ namespace Quiz
                 if (questions[i].IsTrueAnswer(option))
                     points++;
             }
-            Console.WriteLine("Your score - " + points + "/" + questions.Count);
-            questions.Clear();
+            result.name = loginHandler.login;
+            result.answer = points;
+            result.questions = questions.Count;
 
+            questions.Clear();
+        }
+        public void PrintStats(string quiz_name)
+        {
+            statistics.PrintStatistics(quiz_name);
+        }
+        public void AddStats(string quiz_name)
+        {
+            if (!statistics.Exists(quiz_name)) statistics.CreateStatistics(quiz_name, result);
+            else statistics.AddStatistics(quiz_name, result);
         }
         public bool Exists(string quiz_name)
         {

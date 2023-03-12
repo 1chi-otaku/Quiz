@@ -10,8 +10,7 @@ using System.Threading.Tasks;
 namespace Quiz
 {
     public enum AnswerOption {A,B,C,D}
-   
-
+  
     public interface IQuestion
     {
         void PrintQuestion();
