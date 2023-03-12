@@ -16,15 +16,16 @@ namespace Quiz
         public string name;
         public int answer;
         public int questions;
+        public string date;
     }
-    interface StatisticsHandler
+    interface IStatisticsHandler
     {
         void PrintStatistics(string quiz_name);
         void CreateStatistics(string quiz_name,QuizResult result);
         void AddStatistics(string quiz_name, QuizResult result);
         bool Exists(string quiz_name);
     }
-    class FileQuizStatistics : StatisticsHandler
+    class FileQuizStatistics : IStatisticsHandler
     {
         public void PrintStatistics(string quiz_name)
         {
@@ -32,10 +33,15 @@ namespace Quiz
             XmlSerializer serializer = new XmlSerializer(typeof(List<QuizResult>));
             List<QuizResult> results = (List<QuizResult>)serializer.Deserialize(stream);
             stream.Close();
-            foreach (var item in results)
+
+            var result2 = results.OrderByDescending(u => u.answer).ThenByDescending(u => u.date);
+            int i = 1;
+            foreach (var item in result2)
             {
-                Console.WriteLine("Name - " + item.name + "\nResult - " + item.answer + "/" + item.questions);
+                Console.WriteLine(":" + i + ":");
+                Console.WriteLine("User - " + item.name + "\nResult - " + item.answer + "/" + item.questions + "\nDate - " + item.date);
                 Console.WriteLine();
+                i++;
             }
         }
         public void CreateStatistics(string quiz_names, QuizResult result)
@@ -69,6 +75,7 @@ namespace Quiz
             Login.InnerText = result.name;
             Answer.InnerText = result.answer.ToString();
             Question.InnerText = result.questions.ToString();
+            Date.InnerText = result.date;
 
             child.AppendChild(Login);
             child.AppendChild(Answer);

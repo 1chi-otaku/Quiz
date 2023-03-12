@@ -16,7 +16,7 @@ namespace Quiz
         List<Question> questions= new List<Question>();
         LoginHandler loginHandler;
         QuizResult result = new QuizResult();
-        StatisticsHandler statistics = new FileQuizStatistics();
+        IStatisticsHandler statistics = new FileQuizStatistics();
 
         public Quiz() { 
             loginHandler = new LoginHandler();
@@ -50,6 +50,7 @@ namespace Quiz
             result.name = loginHandler.login;
             result.answer = points;
             result.questions = questions.Count;
+            result.date = DateTime.Now.ToString();
 
             questions.Clear();
         }
