@@ -56,7 +56,10 @@ namespace Quiz
         }
         public void PrintStats(string quiz_name)
         {
-            statistics.PrintStatistics(quiz_name);
+            if (!statistics.Exists(quiz_name))
+                Console.WriteLine("No one has taken this quiz yet.");
+            else
+                statistics.PrintStatistics(quiz_name);
         }
         public void AddStats(string quiz_name)
         {

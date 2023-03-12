@@ -37,7 +37,7 @@ namespace Quiz
                 this.password = password;
             }
             else
-                Console.WriteLine("Bruh");
+                throw new Exception("Wrong Password");
             sw.Close();
         }
         public bool Exists(string login)
