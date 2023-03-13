@@ -34,14 +34,20 @@ namespace Quiz
             List<QuizResult> results = (List<QuizResult>)serializer.Deserialize(stream);
             stream.Close();
 
-            var result2 = results.OrderByDescending(u => u.answer).ThenByDescending(u => u.date);
-            int i = 1;
-            foreach (var item in result2)
+            var sorted = results.OrderByDescending(u => u.answer).ThenBy(u => u.date);
+            List<QuizResult> list = sorted.ToList();
+
+            Console.WriteLine("\t\t\t\t\t        \"" + quiz_name + "\"" + " quiz leaderboard");
+            for (int id = 0; id < list.Count(); id++)
             {
-                Console.WriteLine(":" + i + ":");
-                Console.WriteLine("User - " + item.name + "\nResult - " + item.answer + "/" + item.questions + "\nDate - " + item.date);
+                if (id == 0) Console.ForegroundColor = ConsoleColor.DarkYellow;
+                else if(id == 1) Console.ForegroundColor = ConsoleColor.Gray;
+                else if(id == 2) Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("--:" + (id+1) + ":--");
+                Console.WriteLine("User - " + list[id].name + "\nResult - " + list[id].answer + "/" + list[id].questions + "\nDate - " + list[id].date);
                 Console.WriteLine();
-                i++;
+                Console.ForegroundColor = ConsoleColor.White;
+
             }
         }
         public void CreateStatistics(string quiz_names, QuizResult result)

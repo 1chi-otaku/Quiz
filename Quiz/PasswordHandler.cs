@@ -48,5 +48,19 @@ namespace Quiz
             }
             return false;
         }
+        public void ChangePassword(string current_password, string new_password)
+        {
+            if(password == current_password) {
+                password = new_password;
+                string toFile = login + "|" + password;
+                StreamWriter sw = new StreamWriter(login + ".log", false);
+                sw.WriteLine(toFile);
+                sw.Close();
+            }
+            else
+            {
+                throw new Exception("The wrong password");
+            }
+        }
     }
 }

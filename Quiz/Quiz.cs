@@ -15,7 +15,7 @@ namespace Quiz
     {
         List<Question> questions= new List<Question>();
         LoginHandler loginHandler;
-        QuizResult result = new QuizResult();
+        QuizResult result;
         IStatisticsHandler statistics = new FileQuizStatistics();
 
         public Quiz() { 
@@ -41,18 +41,46 @@ namespace Quiz
             {
                 Console.Clear();
                 questions[i].PrintQuestion();
-                string answer = Console.ReadLine();
+                string answer = Console.ReadLine().ToUpper();
                 AnswerOption option;
                 Enum.TryParse<AnswerOption>(answer, out option);
                 if (questions[i].IsTrueAnswer(option))
                     points++;
             }
+            result = new QuizResult();
             result.name = loginHandler.login;
             result.answer = points;
             result.questions = questions.Count;
             result.date = DateTime.Now.ToString();
 
             questions.Clear();
+        }
+        public void PrintResult(string quiz_name)
+        {
+            if (result.questions == 0) throw new Exception("Result doesn't exist exception.");
+            
+            if(result.answer == result.questions)
+            {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine("100%! This is an absolute W!\n");
+            }
+            else if(result.answer > result.questions / 2)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("A truly remarkable result!\n");
+            }
+            else
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("This is L. Try again.\n");
+            }
+            Console.ForegroundColor = ConsoleColor.White;
+
+            Console.WriteLine("User - " + result.name);
+            Console.WriteLine("Quiz - " + quiz_name);
+            Console.WriteLine("Result - " + result.answer + "/" + result.questions);
+            Console.WriteLine("Date - " + result.date);
+
         }
         public void PrintStats(string quiz_name)
         {
@@ -71,6 +99,12 @@ namespace Quiz
             if (File.Exists("QuizType_" + quiz_name + ".xml"))
                 return true;
             return false;
+        }
+        public void ChangePass(string new_password, string current_password)
+        {
+            if (loginHandler == null) throw new Exception("Trying to change password of account that doesn't exist");
+            loginHandler.ChangePassword(current_password,new_password);
+            Console.WriteLine("Success!");
         }
 
     }
