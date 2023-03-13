@@ -17,10 +17,10 @@ namespace Quiz
     {
         static void PrintMenu()
         {
-            Console.WriteLine("-----Quiz Manager-----");
+            Console.WriteLine("-----Quiz Creater Manager-----");
             Console.WriteLine("1 - Show list of quizzes");
             Console.WriteLine("2 - Create Quiz");
-            Console.WriteLine("3 - Edit List");
+            Console.WriteLine("3 - Edit Quiz");
             Console.WriteLine("0 - Exit");
             Console.Write(":-");
         }

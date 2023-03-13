@@ -45,7 +45,23 @@ namespace Quiz
                 AnswerOption option;
                 Enum.TryParse<AnswerOption>(answer, out option);
                 if (questions[i].IsTrueAnswer(option))
+                {
                     points++;
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("Correct");
+                }
+                else
+                {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("Nope");
+                }
+
+                Console.ReadKey();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
+
             }
             result = new QuizResult();
             result.name = loginHandler.login;
@@ -89,10 +105,22 @@ namespace Quiz
             else
                 statistics.PrintStatistics(quiz_name);
         }
+        public void PrintLocalStats(string login)
+        {
+            if (!statistics.Exists("Local_" + login))
+                Console.WriteLine("No one has taken this quiz yet.");
+            else
+                statistics.PrintLocalStatistics(login);
+        }
         public void AddStats(string quiz_name)
         {
             if (!statistics.Exists(quiz_name)) statistics.CreateStatistics(quiz_name, result);
             else statistics.AddStatistics(quiz_name, result);
+        }
+        public void AddStats(string quiz_name, string login)
+        {
+            if (!statistics.Exists("Local_" + login)) statistics.CreateStatistics("Local_" + login, result);
+            else statistics.AddLocalStatistics(login,quiz_name,result);
         }
         public bool Exists(string quiz_name)
         {

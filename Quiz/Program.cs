@@ -55,16 +55,20 @@ namespace Quiz
         }
         static void ShowQuizzes()
         {
-            Console.WriteLine("Available quizzes:");
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine("Available quizzes:\n");
+            Console.ForegroundColor = ConsoleColor.White;
             DirectoryInfo dir = new DirectoryInfo(".");
-            FileInfo[] files = dir.GetFiles(@"QuizType_*.xml");
+            FileInfo[] files = dir.GetFiles("QuizType_*.xml");
+            int i = 1;
             foreach (FileInfo f in files)
             {
                 string s = f.Name;
-                s = s.Replace("QuizType_", "");
-                s = s.Replace(".xml", "");
-                Console.WriteLine(s);
+                s = s.Replace("QuizType_", "").Replace(".xml", "");
+                Console.WriteLine(i + "|:| " + s);
+                i++;
             }
+            Console.WriteLine();
         }
         static void MainQuizMenu(string quiz_name)
         {
@@ -108,6 +112,7 @@ namespace Quiz
                 {
                     Console.WriteLine("Error.");
                     Console.ReadKey();
+                    return;
                 }
                 Console.Clear();
                 MainMenu();
@@ -128,7 +133,7 @@ namespace Quiz
                             string selected_quiz = Console.ReadLine();
                             quiz.SelectQuiz(selected_quiz);
                             int input2 = -1;
-                            while(input2 != 0)
+                            while (input2 != 0)
                             {
                                 Console.Clear();
                                 MainQuizMenu(selected_quiz);
@@ -146,7 +151,11 @@ namespace Quiz
                                         Console.WriteLine("2 - No");
                                         Console.WriteLine("0 - Return");
                                         int input3 = Convert.ToInt32(Console.ReadLine());
-                                        if (input3 == 1) quiz.AddStats(selected_quiz);
+                                        if (input3 == 1)
+                                        {
+                                            quiz.AddStats(selected_quiz);
+                                            quiz.AddStats(selected_quiz, login);
+                                        }
                                         break;
                                     case 2:
                                         quiz.PrintStats(selected_quiz);
@@ -157,12 +166,16 @@ namespace Quiz
                                 }
                             }
                             break;
+                        case 2:
+                            quiz.PrintLocalStats(login);
+                            Console.ReadKey();
+                            break;
                         case 3:
                             Console.Write("Enter your previous password:");
                             string prev_pass = Console.ReadLine();
                             Console.Write("Enter a new password:");
                             string new_pass = Console.ReadLine();
-                            quiz.ChangePass(new_pass,prev_pass);
+                            quiz.ChangePass(new_pass, prev_pass);
                             Console.ReadKey();
                             break;
                         default:
@@ -171,11 +184,10 @@ namespace Quiz
                     }
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                Console.WriteLine(ex.Message); 
+                Console.WriteLine(ex.Message);
             }
-            
         }
     }
 }

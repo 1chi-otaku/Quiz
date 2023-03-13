@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -21,8 +22,10 @@ namespace Quiz
     interface IStatisticsHandler
     {
         void PrintStatistics(string quiz_name);
+        void PrintLocalStatistics(string login);
         void CreateStatistics(string quiz_name,QuizResult result);
         void AddStatistics(string quiz_name, QuizResult result);
+        void AddLocalStatistics(string login, string quiz_name, QuizResult result);
         bool Exists(string quiz_name);
     }
     class FileQuizStatistics : IStatisticsHandler
@@ -47,7 +50,17 @@ namespace Quiz
                 Console.WriteLine("User - " + list[id].name + "\nResult - " + list[id].answer + "/" + list[id].questions + "\nDate - " + list[id].date);
                 Console.WriteLine();
                 Console.ForegroundColor = ConsoleColor.White;
-
+            }
+        }
+        public void PrintLocalStatistics(string login)
+        {
+            FileStream stream = new FileStream("QuizStatType_Local_" + login + ".xml", FileMode.Open);
+            XmlSerializer serializer = new XmlSerializer(typeof(List<QuizResult>));
+            List<QuizResult> results = (List<QuizResult>)serializer.Deserialize(stream);
+            stream.Close();
+            foreach (var item in results)
+            {
+                Console.WriteLine("Quiz - " + item.name + "\nResult - " + item.answer + "/" + item.questions + "\nDate - " + item.date);
             }
         }
         public void CreateStatistics(string quiz_names, QuizResult result)
@@ -88,6 +101,31 @@ namespace Quiz
             child.AppendChild(Question);
             child.AppendChild(Date);
             doc.Save("QuizStatType_" + quiz_name + ".xml");
+        }
+        public void AddLocalStatistics(string login, string quiz_name, QuizResult result)
+        {
+            if (!Exists("Local_" + login)) throw new Exception("Quiz with this name doesn't exist");
+            XmlDocument doc = new XmlDocument();
+            doc.Load("QuizStatType_Local_" + login + ".xml");
+
+            XmlNode root = doc.SelectSingleNode("ArrayOfQuizResult");
+            XmlElement child = doc.CreateElement("QuizResult");
+            root.AppendChild(child);
+
+            XmlElement Login = doc.CreateElement("name");
+            XmlElement Answer = doc.CreateElement("answer");
+            XmlElement Question = doc.CreateElement("questions");
+            XmlElement Date = doc.CreateElement("date");
+            Login.InnerText = quiz_name;
+            Answer.InnerText = result.answer.ToString();
+            Question.InnerText = result.questions.ToString();
+            Date.InnerText = result.date;
+
+            child.AppendChild(Login);
+            child.AppendChild(Answer);
+            child.AppendChild(Question);
+            child.AppendChild(Date);
+            doc.Save("QuizStatType_Local_" + login + ".xml");
         }
     }
 }
