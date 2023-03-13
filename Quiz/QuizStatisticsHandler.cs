@@ -84,6 +84,4 @@ namespace Quiz
             doc.Save("QuizStatType_" + quiz_name + ".xml");
         }
     }
-
-
 }

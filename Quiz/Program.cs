@@ -69,51 +69,42 @@ namespace Quiz
         {
             int input = -1;
             string login = string.Empty, password = string.Empty;
-            Quiz quiz = new Quiz("1chi","123");
+            Quiz quiz = null;
+            Console.Clear();
+            Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t    1 - Login");
+            Console.WriteLine("\t\t\t\t\t\t    2 - Register");
+            Console.Write("\t\t\t\t\t\t        :-");
+            input = Convert.ToInt32(Console.ReadLine());
+            Console.Clear();
+            if (input == 1)
+            {
+                Console.Write("\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tEnter your login: ");
+                login = Console.ReadLine();
+                Console.Write("\t\t\t\t\t\t    Enter password:");
+                password = Console.ReadLine();
+                quiz = new Quiz(login, password);
+                input = 0;
+            }
+            else if (input == 2)
+            {
+                quiz = new Quiz();
+                Console.WriteLine("\n\n\n\n\n\n\n\n\t\t\t\t\t\tSuccess! Please login now.");
+                Console.ReadKey();
+                input = 0;
+            }
+            else
+            {
+                Console.WriteLine("Error.");
+                Console.ReadKey();
+            }
+
             try
             {
-                if(String.IsNullOrEmpty(login)) {
 
-                    while (input != 0)
-                    {
-                        Console.Clear();
-                        MainMenu();
-                        input = Convert.ToInt32(Console.ReadLine());
-                        if (input == 0) return;
-                        Console.Clear();
-                        Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\t    1 - Login");
-                        Console.WriteLine("\t\t\t\t\t\t    2 - Register");
-                        Console.Write("\t\t\t\t\t\t        :-");
-                        input = Convert.ToInt32(Console.ReadLine());
-                        Console.Clear();
-                        if (input == 1)
-                        {
-                            Console.Write("\n\n\n\n\n\n\n\n\n\n\n\n\t\t\t\t\t\tEnter your login: ");
-                            login = Console.ReadLine();
-                            Console.Write("\t\t\t\t\t\t    Enter password:");
-                            password = Console.ReadLine();
-                            quiz = new Quiz(login, password);
-                            input = 0;
-                            continue;
-                        }
-                        else if (input == 2)
-                        {
-                            quiz = new Quiz();
-                            Console.WriteLine("\n\n\n\n\n\n\n\n\t\t\t\t\t\tSuccess! Please login now.");
-                            Console.ReadKey();
-                            input = 0;
-                            continue;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Error.");
-                            Console.ReadKey();
-                            continue;
-                        }
-                    }
-
-                }
-             
+                Console.Clear();
+                MainMenu();
+                input = Convert.ToInt32(Console.ReadLine());
+                if (input == 0) return;
                 input = -1;
                 while (input != 0)
                 {
